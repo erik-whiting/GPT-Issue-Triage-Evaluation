@@ -7,7 +7,7 @@ REPO_PATH = f"erik-whiting/{REPO_NAME}"
 
 def authenticate():
     with open("../issue_reader_token") as fh:
-        access_token = fh.read()
+        access_token = fh.read().strip()
 
     auth = Auth.Token(access_token)
     g = Github(auth=auth)
@@ -23,7 +23,6 @@ def get_repo():
 
 def get_issues():
     repo = get_repo()
-    repo.issue
     issues = repo.get_issues()
     return issues
 
