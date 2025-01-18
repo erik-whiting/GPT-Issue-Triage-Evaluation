@@ -27,6 +27,31 @@ def get_issues():
     return issues
 
 
+def get_issue(issue_num):
+    repo = get_repo()
+    issue = repo.get_issue(issue_num)
+    return issue
+
+
+def parse_issue(issue):
+    issue_body = issue.body
+    issue_data = issue_body.split("\n")
+    parsed_data = {}
+    if issue_data[0] == "Setup":
+        issue_data.pop(0)
+        py_version = issue_data.pop(0).split(" ")[1].strip()
+        bp_version = issue_data.pop(0).split(" ")[1].strip()
+        os_version = issue_data.pop(0).split(": ")[1].strip()
+        parsed_data = {"py_version": py_version, "bp_version": bp_version, "os_version": os_version}
+        if issue_data[0] == "":
+            issue_data.pop(0)
+        parsed_data["ticket_body"] = issue_data
+    if parsed_data:
+        return parsed_data
+    else:
+        return issue_body
+
+
 def issue_key(issue):
     return issue.title.replace(" ", "-") + f"-{issue.number}"
 
