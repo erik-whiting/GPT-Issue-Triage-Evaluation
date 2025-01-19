@@ -1,4 +1,4 @@
-from github import Github, Auth
+from github import Github, Auth, UnknownObjectException
 
 
 REPO_NAME = "biopython"
@@ -15,9 +15,11 @@ def authenticate():
     return g
 
 
-def get_repo():
+def get_repo(commit_sha=None):
     auth = authenticate()
     repo = auth.get_repo(REPO_PATH)
+    if commit_sha:
+        repo = repo.get_commit(commit_sha)
     return repo
 
 
@@ -50,6 +52,40 @@ def parse_issue(issue):
         return parsed_data
     else:
         return issue_body
+
+
+def get_files_with_most_commits(file_count_cutoff=5):
+    with open("files_with_most_commits.txt") as fh:
+        files = [line.strip() for line in fh.readlines()]
+    files = [f for f in files if "Tests" not in f]
+    files = [f for f in files if ".py" in f]
+    files = [f for f in files if "__init__" not in f]
+    files = [f.split("\t")[1] for f in files]
+    return files[:file_count_cutoff]
+
+
+def download_files(repo, git_sha=None):
+    files = get_files_with_most_commits()
+    file_code_map = {}
+    for f in files:
+        try:
+            if git_sha:
+                code = repo.get_contents(f, git_sha).decoded_content.decode("utf-8")
+            else:
+                code = repo.get_contents(f).decoded_content.decode("utf-8")
+            file_code_map[f] = code
+        except UnknownObjectException:
+            continue
+    return file_code_map
+
+
+def get_code_snippets(repo, github_sha):
+    code_map = download_files(repo, github_sha)
+    code_snippet = ""
+    for fname, code in code_map.items():
+        code_snippet += f"File: {fname}\n{'-'*40}\n"
+        code_snippet += f"{code}\n"
+    return code_snippet
 
 
 def issue_key(issue):

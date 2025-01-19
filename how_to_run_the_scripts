@@ -1,0 +1,6 @@
+# From the root directory:
+
+python -m scripts.test_oob_nuitka
+python -m scripts.test_code_nuitka
+
+# etc.
