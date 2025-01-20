@@ -26,7 +26,7 @@ def get_embedding(text, model="text-embedding-ada-002"):
 
 
 def read_embeddings_file():
-    df = pd.read_csv('../embeddings_tools/biopython_embeddings.csv')
+    df = pd.read_csv('embeddings_tools/biopython_embeddings.csv')
     df['code_embedding'] = df.code_embedding.apply(eval).apply(np.array)
     return df
 
