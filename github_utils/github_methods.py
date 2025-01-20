@@ -39,15 +39,15 @@ def parse_issue(issue):
     issue_body = issue.body
     issue_data = issue_body.split("\n")
     parsed_data = {}
-    if issue_data[0] == "Setup":
-        issue_data.pop(0)
-        py_version = issue_data.pop(0).split(" ")[1].strip()
-        bp_version = issue_data.pop(0).split(" ")[1].strip()
-        os_version = issue_data.pop(0).split(": ")[1].strip()
-        parsed_data = {"py_version": py_version, "bp_version": bp_version, "os_version": os_version}
-        if issue_data[0] == "":
-            issue_data.pop(0)
-        parsed_data["ticket_body"] = issue_data
+    # if issue_data[0] == "Setup":
+    #     issue_data.pop(0)
+    #     py_version = issue_data.pop(0).split(" ")[1].strip()
+    #     bp_version = issue_data.pop(0).split(" ")[1].strip()
+    #     os_version = issue_data.pop(0).split(": ")[1].strip()
+    #     parsed_data = {"py_version": py_version, "bp_version": bp_version, "os_version": os_version}
+    #     if issue_data[0] == "":
+    #         issue_data.pop(0)
+    #     parsed_data["ticket_body"] = issue_data
     if parsed_data:
         return parsed_data
     else:

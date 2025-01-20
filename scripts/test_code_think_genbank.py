@@ -2,13 +2,13 @@ import github_utils.github_methods as gm
 import prompts.gpt_methods_code_think as gpt_wc
 
 
-pre_fix_sha = "6ebae6a66d2f313eaec94c2cb10e25ed5d2eae75"
+pre_fix_sha = "d546f3e6de6e241261691b577c4261a7ac8f0d78"
 
 model_under_test = "With-Code-Context-and-Thinking"
-nuitka_issue = 20
+genbank_issue = 22
 
 repo = gm.get_repo()
-issue = repo.get_issue(nuitka_issue)
+issue = repo.get_issue(genbank_issue)
 
 issue_text = gm.parse_issue(issue)
 
